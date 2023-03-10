@@ -1,0 +1,16 @@
+button{
+  position: absolute;
+  top: 40%;
+  left: 25%;
+width: 50%;
+  height: 10%;
+  background-color: aquamarine;
+}
+button h1{
+  text-align: center;
+  font-size: 50px;
+}
+#container{
+  height: 95%;
+  background-color: rgba(127,255,212,30%);
+}

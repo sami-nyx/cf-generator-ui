@@ -1,0 +1,49 @@
+#container{
+  height: 100%;
+  background-color: rgba(127,255,212,30%);
+}
+#main_resource{
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 60%;
+  height: 10%;
+
+  background-color: rgba(150,220,212,60%);
+  /*border: solid rgba(127,255,212,30%);*/
+  border: solid rgba(127,220,212,80%);
+border-radius: 10px;
+}
+
+#resource_filed{
+  left: 2.5%;
+  top:25%;
+  background-color:rgba(127,185,212,80%);
+  border-radius: 5px;
+  padding: 3px;
+}
+
+#check{
+  color:rgba(127,200,212,100%) ;
+  position: absolute;
+scale: 200%;
+  top: 40%;
+  left:96%;
+}
+#check:hover{
+  color:darkgreen;
+}
+/*#newResource{*/
+/*  height: 40%;*/
+/*}*/
+.mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+  width: 50%;
+  height: 100%;
+}
+.mat-mdc-form-field +{
+  height: 50%;
+}
+#newResourceForm{
+  height: 300px;
+}
