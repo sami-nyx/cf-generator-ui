@@ -25,10 +25,10 @@ border-radius: 10px;
 
 #check{
   color:rgba(127,200,212,100%) ;
-  position: absolute;
+position: relative;
 scale: 200%;
-  top: 40%;
-  left:96%;
+  /*top: 40%;*/
+  /*left:96%;*/
 }
 #check:hover{
   color:darkgreen;
@@ -45,5 +45,6 @@ scale: 200%;
   height: 50%;
 }
 #newResourceForm{
+background-color: red;
   height: 300px;
 }

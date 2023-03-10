@@ -37,29 +37,10 @@
           Currently I am {{panelOpenState ? 'open' : 'closed'}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div id="newResourceForm">
-        <div id="main_resource">
-
-          <mat-form-field id="resource_filed" appearance="fill">
-            <mat-label>resource type</mat-label>
-            <mat-select [formControl]="resourceControl" required>
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let animal of animals" [value]="animal">
-                {{animal.name}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="resourceControl.hasError('required')">Please choose an animal</mat-error>
-            <mat-hint>{{resourceControl.value?.sound}}</mat-hint>
-          </mat-form-field>
-
-
-          <mat-icon id="check">check</mat-icon>
-
-
-
-        </div>
-      </div>
       <p>I'm visible because I am open</p>
+
+      <app-new-resource-form></app-new-resource-form>
+
     </mat-expansion-panel>
   </mat-accordion>
 

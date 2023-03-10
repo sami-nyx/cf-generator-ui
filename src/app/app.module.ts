@@ -16,6 +16,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatExpansionModule} from "@angular/material/expansion";
 import { ResourceComponent } from './resource/resource.component';
+import { NewResourceFormComponent } from './new-resource-form/new-resource-form.component';
 
 const routes: Routes = [
   { path: 'createTemplate', component: CreateTemplateComponent },
@@ -28,7 +29,8 @@ const routes: Routes = [
     LandingComponent,
     HeaderComponent,
     CreateTemplateComponent,
-    ResourceComponent
+    ResourceComponent,
+    NewResourceFormComponent
   ],
   imports: [
     BrowserModule,
