@@ -31,15 +31,15 @@
                          (closed)="panelOpenState = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Self aware panel
+          new resource
         </mat-panel-title>
         <mat-panel-description>
-          Currently I am {{panelOpenState ? 'open' : 'closed'}}
+<!--          Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>I'm visible because I am open</p>
+<!--      <p>I'm visible because I am open</p>-->
 
-      <app-new-resource-form></app-new-resource-form>
+      <app-new-resource-form (resourceCreated)="ResourceCreatedEventHandler($event)" ></app-new-resource-form>
 
     </mat-expansion-panel>
   </mat-accordion>

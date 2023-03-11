@@ -29,6 +29,7 @@ position: relative;
 scale: 200%;
   /*top: 40%;*/
   /*left:96%;*/
+  right: 5%;
 }
 #check:hover{
   color:darkgreen;

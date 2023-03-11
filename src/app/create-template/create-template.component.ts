@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
-
 
 // const resouses;
 @Component({
@@ -11,9 +9,14 @@ import {FormControl, Validators} from "@angular/forms";
 export class CreateTemplateComponent implements OnInit {
   panelOpenState = false;
 
-  constructor() { }
+  constructor() {
+
+  }
 
   ngOnInit(): void {
   }
 
+  ResourceCreatedEventHandler(newResource: any) {
+console.log(newResource)
+  }
 }

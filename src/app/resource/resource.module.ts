@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 
 @NgModule({
@@ -10,9 +9,13 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class ResourceModule {
-  constructor(resourceType:String,fields:Map<any, any>) {
-  console.log(resourceType);
-  console.log(fields);
+
+  properties: Map<string, string> | undefined;
+
+  constructor(properties: Map<string, string>) {
+    this.properties = properties;
 
   }
+
+
 }

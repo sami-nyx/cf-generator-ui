@@ -17,6 +17,9 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatExpansionModule} from "@angular/material/expansion";
 import { ResourceComponent } from './resource/resource.component';
 import { NewResourceFormComponent } from './new-resource-form/new-resource-form.component';
+import {MatStepperModule} from "@angular/material/stepper";
+import {MatInputModule} from "@angular/material/input";
+import {MatListModule} from "@angular/material/list";
 
 const routes: Routes = [
   { path: 'createTemplate', component: CreateTemplateComponent },
@@ -32,20 +35,23 @@ const routes: Routes = [
     ResourceComponent,
     NewResourceFormComponent
   ],
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes),
-    MatSlideToggleModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatProgressBarModule,
-    MatIconModule,
-    MatToolbarModule,
-    AppRoutingModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatExpansionModule
-  ],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(routes),
+        MatSlideToggleModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatProgressBarModule,
+        MatIconModule,
+        MatToolbarModule,
+        AppRoutingModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatExpansionModule,
+        MatStepperModule,
+        MatInputModule,
+        MatListModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
