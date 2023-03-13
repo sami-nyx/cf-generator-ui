@@ -11,7 +11,7 @@ import {CommonModule} from '@angular/common';
 export class ResourceModule {
 
   properties: Map<string, string> | undefined;
-
+  type:string='';
   constructor(properties: Map<string, string>) {
     this.properties = properties;
 

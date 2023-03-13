@@ -42,6 +42,7 @@ function getProperties(value: String) {
 })
 export class NewResourceFormComponent {
   resourceControl = new FormControl<Resource | null>(null, Validators.required);
+  resourceName:string='';
 @Output() resourceCreated=new EventEmitter
   properties: Map<string, string> = new Map<string, string>();
   selectedTags: Map<string, string> = new Map<string, string>();
@@ -52,16 +53,10 @@ export class NewResourceFormComponent {
     {name: 'VPC', logicalName: 'ec2::vpc'},
   ];
 
-  onSelected(value: String) {
-
-
-    this.properties = getProperties(value);
-    console.log(value)
-  }
 
 
   firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
+    resourceType: [''],
   });
   secondFormGroup = this._formBuilder.group({
     key: [''],
@@ -69,6 +64,12 @@ export class NewResourceFormComponent {
   });
 
   constructor(private _formBuilder: FormBuilder) {
+
+  }
+  onSelected() {
+    let tempResource=this.firstFormGroup.value.resourceType;
+    this.resourceName=(<Resource><unknown>tempResource).name;
+    this.properties = getProperties(this.resourceName);
 
   }
 
@@ -79,14 +80,12 @@ export class NewResourceFormComponent {
   submitA() {
     let resourceProperties: Map<string, string> = this.selectedTags;
     this.selectedTags = new Map<string, string>();
-    console.log(resourceProperties);
-    console.log(this.selectedTags);
-
+    this.firstFormGroup.reset();
+    this.secondFormGroup.reset();
     let createdResource: ResourceModule = new ResourceModule(resourceProperties);
+    createdResource.type=this.resourceName;
    this.resourceCreated.emit(createdResource);
-    // ResourceModule=new ResourceComponent(properties);
-// console.log(this.resourceControl)
-// console.log(this.firstFormGroup)
+
 
   }
 

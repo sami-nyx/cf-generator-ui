@@ -1,45 +1,35 @@
 <div id="container">
 
   <app-resource></app-resource>
-
-  <!--  <mat-expansion-panel id="newResource" hideToggle>-->
-  <!--    <mat-expansion-panel-header>-->
-  <!--      <mat-panel-title>-->
-  <!--new resource:-->
-  <!--      </mat-panel-title>-->
-  <!--      <mat-panel-description>-->
-  <!--&lt;!&ndash;        summary&ndash;&gt;-->
-
-  <!--        add new resource-->
-  <!--      </mat-panel-description>-->
-  <!--    </mat-expansion-panel-header>-->
-  <!--&lt;!&ndash;hidden&ndash;&gt;-->
-  <!--  </mat-expansion-panel>-->
   <mat-accordion>
-    <mat-expansion-panel hideToggle>
+
+      <mat-expansion-panel *ngFor=" let resource of mainResources" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{resource.type}}
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="resourceInfo" *ngFor="let property of resource.properties|keyvalue">
+            <span >{{property.key}}: {{property.value}}</span>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>This is the primary content of the panel.</p>
+      </mat-expansion-panel>
+
+    <mat-expansion-panel [(expanded)]="panelOpenState">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          This is the expansion title
-        </mat-panel-title>
-        <mat-panel-description>
-          This is a summary of the content
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <p>This is the primary content of the panel.</p>
-    </mat-expansion-panel>
-    <mat-expansion-panel (opened)="panelOpenState = true"
-                         (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
+          <mat-icon>add</mat-icon>
           new resource
         </mat-panel-title>
         <mat-panel-description>
-<!--          Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+          <!--          Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
         </mat-panel-description>
       </mat-expansion-panel-header>
-<!--      <p>I'm visible because I am open</p>-->
+      <!--      <p>I'm visible because I am open</p>-->
 
-      <app-new-resource-form (resourceCreated)="ResourceCreatedEventHandler($event)" ></app-new-resource-form>
+      <app-new-resource-form (resourceCreated)="ResourceCreatedEventHandler($event)"></app-new-resource-form>
 
     </mat-expansion-panel>
   </mat-accordion>

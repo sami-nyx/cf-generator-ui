@@ -49,3 +49,10 @@ scale: 200%;
 background-color: red;
   height: 300px;
 }
+.resourceInfo{
+  justify-content: space-between;
+  margin-right: 5px;
+}
+span{
+  padding-right: 1rem;
+}
