@@ -1,4 +1,5 @@
 <mat-stepper orientation="vertical" [linear]="false" #stepper>
+  <!------------------------------------------------------------------------------------------------------------  resource type-->
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>select resource type</ng-template>
@@ -8,10 +9,10 @@
       <mat-form-field mat-select-trigger="" id="resource_filed" appearance="fill">
         <mat-label>resource type</mat-label>
         <mat-select (selectionChange)="onSelected()" [formControl]="firstFormGroup.controls.resourceType" required>
-<!--          <mat-select [formControl]="secondFormGroup.controls.key">-->
+          <!--          <mat-select [formControl]="secondFormGroup.controls.key">-->
           <mat-option>--</mat-option>
-<!--          (click)="onSelected(resource.name)"-->
-          <mat-option *ngFor="let resource of resources" [value]="resource" >
+          <!--          (click)="onSelected(resource.name)"-->
+          <mat-option *ngFor="let resource of resources" [value]="resource">
             {{resource.name}}
           </mat-option>
         </mat-select>
@@ -25,18 +26,15 @@
         <button mat-button matStepperNext (click)="printPros()">Next</button>
       </div>
     </form>
+
+    <!------------------------------------------------------------------------------------------------------------  resource type-->
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
 
     <ng-template matStepLabel>choose properties</ng-template>
     <mat-list role="list">
-      <mat-list-item *ngFor="let property of selectedTags| keyvalue" role="listitem">
-        <!--          <mat-form-field class="example-full-width">-->
-        <!--            <mat-label>{{property.key}}</mat-label>-->
-        <!--            <input  matInput placeholder="{{property.value}} " >-->
-        <!--          </mat-form-field>-->
+      <mat-list-item *ngFor="let property of selectedProperties| keyvalue" role="listitem">
         <div class="example-container">
-
 
           <mat-form-field appearance="fill">
             <mat-label>Property Name</mat-label>
@@ -47,11 +45,10 @@
           <mat-form-field appearance="fill">
             <mat-label>value</mat-label>
             <input matInput #input maxlength="10" value="{{property.value}}" disabled>
-            <!--               <mat-hint align="end">{{input.value.length}}/10</mat-hint>-->
           </mat-form-field>
-
         </div>
       </mat-list-item>
+      <!------------------------------------------------------------------------------------------------------------  add property-->
       <div id="addProperty">
         <form [formGroup]="secondFormGroup">
           <mat-form-field appearance="fill">
@@ -67,9 +64,55 @@
             <mat-hint align="end">{{input.value.length}}/50</mat-hint>
           </mat-form-field>
 
-          <button mat-flat-button  id="addPropertyButton" (click)="addProperty()">
+          <button mat-flat-button id="addPropertyButton" (click)="addProperty()">
 
-            <mat-icon >add</mat-icon>
+
+            <mat-icon>add</mat-icon>
+          </button>
+        </form>
+      </div>
+    </mat-list>
+
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+
+  </mat-step>
+  <!------------------------------------------------------------------------------------------------------------  add tags -->
+  <mat-step [stepControl]="secondFormGroup">
+
+    <ng-template matStepLabel>addTags</ng-template>
+    <mat-list role="list">
+      <mat-list-item *ngFor="let tag of tags| keyvalue" role="listitem">
+        <div class="example-container">
+          <mat-form-field appearance="fill">
+            <mat-label>tag name</mat-label>
+            <input matInput #input maxlength="10" value="{{tag.key}}" disabled>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>value</mat-label>
+            <input matInput #input maxlength="10" value="{{tag.value}}" disabled>
+          </mat-form-field>
+
+        </div>
+      </mat-list-item>
+      <div id="addTagsStep">
+        <form [formGroup]="tagsFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>property Name</mat-label>
+            <input [formControl]="tagsFormGroup.controls.key" matInput #input maxlength="50">
+            <mat-hint align="end">{{input.value.length}}/50</mat-hint>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>property Value</mat-label>
+            <input [formControl]="tagsFormGroup.controls.value" matInput #input maxlength="50">
+            <mat-hint align="end">{{input.value.length}}/50</mat-hint>
+          </mat-form-field>
+
+          <button mat-flat-button id="addTagButton" (click)="addTag()">
+
+            <mat-icon>add</mat-icon>
           </button>
         </form>
       </div>
@@ -85,7 +128,7 @@
     <ng-template matStepLabel>Done</ng-template>
     <p>You are now done.</p>
     <div>
-      <button mat-button  (click)="submitA()">Done</button>
+      <button mat-button (click)="submitA()">Done</button>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset()">Reset</button>
     </div>

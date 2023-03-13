@@ -42,19 +42,17 @@ function getProperties(value: String) {
 })
 export class NewResourceFormComponent {
   resourceControl = new FormControl<Resource | null>(null, Validators.required);
-  resourceName:string='';
-@Output() resourceCreated=new EventEmitter
+  resourceName: string = '';
+  @Output() resourceCreated = new EventEmitter
   properties: Map<string, string> = new Map<string, string>();
-  selectedTags: Map<string, string> = new Map<string, string>();
+  selectedProperties: Map<string, string> = new Map<string, string>();
+  tags: Map<string, string> = new Map<string, string>();
 
 
   resources: Resource[] = [
     {name: 'S3', logicalName: 'aws::s3'},
     {name: 'VPC', logicalName: 'ec2::vpc'},
   ];
-
-
-
   firstFormGroup = this._formBuilder.group({
     resourceType: [''],
   });
@@ -62,13 +60,18 @@ export class NewResourceFormComponent {
     key: [''],
     value: ['']
   });
+  tagsFormGroup = this._formBuilder.group({
+    key: [''],
+    value: ['']
+  });
 
   constructor(private _formBuilder: FormBuilder) {
 
   }
+
   onSelected() {
-    let tempResource=this.firstFormGroup.value.resourceType;
-    this.resourceName=(<Resource><unknown>tempResource).name;
+    let tempResource = this.firstFormGroup.value.resourceType;
+    this.resourceName = (<Resource><unknown>tempResource).name;
     this.properties = getProperties(this.resourceName);
 
   }
@@ -78,13 +81,18 @@ export class NewResourceFormComponent {
   }
 
   submitA() {
-    let resourceProperties: Map<string, string> = this.selectedTags;
-    this.selectedTags = new Map<string, string>();
+    let resourceProperties: Map<string, string> = this.selectedProperties;
+    let resourceTags: Map<string, string> = this.tags;
+    this.selectedProperties = new Map<string, string>();
+    this.selectedProperties = new Map<string, string>();
+    this.tags = new Map<string, string>();
+
     this.firstFormGroup.reset();
     this.secondFormGroup.reset();
-    let createdResource: ResourceModule = new ResourceModule(resourceProperties);
-    createdResource.type=this.resourceName;
-   this.resourceCreated.emit(createdResource);
+    this.tagsFormGroup.reset();
+    let createdResource: ResourceModule = new ResourceModule(resourceProperties, resourceTags);
+    createdResource.type = this.resourceName;
+    this.resourceCreated.emit(createdResource);
 
 
   }
@@ -96,8 +104,24 @@ export class NewResourceFormComponent {
       return
     if (tempKey == null || tempKey == '')
       return
-    this.selectedTags.set(tempKey, tempVal)
+    this.selectedProperties.set(tempKey, tempVal)
     this.secondFormGroup.reset();
+
+  }
+
+  addTag() {
+    let tempKey = this.tagsFormGroup.value.key;
+    let tempVal = this.tagsFormGroup.value.value;
+
+    if (tempKey == null || tempKey == '')
+      return
+    if (tempVal == null || tempVal == '')
+      return
+
+    this.tags.set(tempKey, tempVal)
+
+
+    this.tagsFormGroup.reset();
 
   }
 }

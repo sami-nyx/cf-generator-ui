@@ -20,6 +20,7 @@ import { NewResourceFormComponent } from './new-resource-form/new-resource-form.
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatInputModule} from "@angular/material/input";
 import {MatListModule} from "@angular/material/list";
+import { ParamsComponent } from './params/params.component';
 
 const routes: Routes = [
   { path: 'createTemplate', component: CreateTemplateComponent },
@@ -33,7 +34,8 @@ const routes: Routes = [
     HeaderComponent,
     CreateTemplateComponent,
     ResourceComponent,
-    NewResourceFormComponent
+    NewResourceFormComponent,
+    ParamsComponent
   ],
     imports: [
         BrowserModule,

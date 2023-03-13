@@ -10,11 +10,14 @@ import {CommonModule} from '@angular/common';
 })
 export class ResourceModule {
 
-  properties: Map<string, string> | undefined;
-  type:string='';
-  constructor(properties: Map<string, string>) {
-    this.properties = properties;
 
+  properties: Map<string, string>;
+  type: string|undefined;
+  tags: Map<string, string>;
+
+  constructor(properties: Map<string, string>, tags: Map<string, string>) {
+    this.properties = properties;
+    this.tags = tags;
   }
 
 
