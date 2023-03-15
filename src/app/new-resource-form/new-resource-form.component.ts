@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {ResourceModule} from "../resource/resource.module";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 
 interface Resource {
   name: string;
@@ -41,24 +42,30 @@ function getProperties(value: String) {
   styleUrls: ['./new-resource-form.component.css']
 })
 export class NewResourceFormComponent {
+  @Output() resourceCreated = new EventEmitter;
+  @Input() params: Map<string, string> = new Map<string, string>();
+  @Input() existingResources: Array<ResourceModule> = new Array<ResourceModule>();
+
   resourceControl = new FormControl<Resource | null>(null, Validators.required);
-  resourceName: string = '';
-  @Output() resourceCreated = new EventEmitter
   properties: Map<string, string> = new Map<string, string>();
+  resourceName: string = '';
+
+  resource = new ResourceModule(new Map<string, string>(), new Map<string, string>());
   selectedProperties: Map<string, string> = new Map<string, string>();
   tags: Map<string, string> = new Map<string, string>();
-
-
   resources: Resource[] = [
     {name: 'S3', logicalName: 'aws::s3'},
     {name: 'VPC', logicalName: 'ec2::vpc'},
   ];
+
   firstFormGroup = this._formBuilder.group({
     resourceType: [''],
+    resourceName: ['']
   });
   secondFormGroup = this._formBuilder.group({
     key: [''],
-    value: ['']
+    value: [''],
+    type: ['']
   });
   tagsFormGroup = this._formBuilder.group({
     key: [''],
@@ -66,33 +73,36 @@ export class NewResourceFormComponent {
   });
 
   constructor(private _formBuilder: FormBuilder) {
-
   }
 
-  onSelected() {
-    let tempResource = this.firstFormGroup.value.resourceType;
-    this.resourceName = (<Resource><unknown>tempResource).name;
-    this.properties = getProperties(this.resourceName);
-
-  }
 
   printPros() {
-    console.log(this.properties)
+    if (this.firstFormGroup.value.resourceType == null)
+      return
+    if (this.firstFormGroup.value.resourceName == null)
+      return
+
+    this.resource.type = this.firstFormGroup.value.resourceType;
+    this.resource.name = this.firstFormGroup.value.resourceName;
+
+    this.properties = getProperties(this.resource.type);
+    console.log("new formName:"+ this.firstFormGroup.value.resourceName);
+    console.log("new resourceNAme:"+this.resource.name);
+    console.log("new resourceType:"+this.resource.type);
+    console.log(this.firstFormGroup.value)
   }
 
   submitA() {
-    let resourceProperties: Map<string, string> = this.selectedProperties;
-    let resourceTags: Map<string, string> = this.tags;
-    this.selectedProperties = new Map<string, string>();
+     this.selectedProperties = new Map<string, string>();
     this.selectedProperties = new Map<string, string>();
     this.tags = new Map<string, string>();
 
     this.firstFormGroup.reset();
     this.secondFormGroup.reset();
     this.tagsFormGroup.reset();
-    let createdResource: ResourceModule = new ResourceModule(resourceProperties, resourceTags);
-    createdResource.type = this.resourceName;
-    this.resourceCreated.emit(createdResource);
+    this.secondFormGroup.value.type = 'direct';
+    this.resourceCreated.emit(this.resource);
+    this.resource=new ResourceModule(new Map<string,string>(),new Map<string,string>());
 
 
   }
@@ -104,9 +114,10 @@ export class NewResourceFormComponent {
       return
     if (tempKey == null || tempKey == '')
       return
-    this.selectedProperties.set(tempKey, tempVal)
+    this.resource.properties.set(tempKey, tempVal);
     this.secondFormGroup.reset();
-
+    console.log(this.secondFormGroup.value.type);
+    this.secondFormGroup.value.type = 'direct';
   }
 
   addTag() {
@@ -117,12 +128,15 @@ export class NewResourceFormComponent {
       return
     if (tempVal == null || tempVal == '')
       return
-
-    this.tags.set(tempKey, tempVal)
-
+    this.resource.tags.set(tempKey, tempVal);
 
     this.tagsFormGroup.reset();
 
+  }
+
+  onRadioChange() {
+    console.log(this.secondFormGroup.value.type);
+    console.log(this.params);
   }
 }
 

@@ -56,3 +56,6 @@ background-color: red;
 span{
   padding-right: 1rem;
 }
+mat-label{
+  padding-right: 1rem;
+}

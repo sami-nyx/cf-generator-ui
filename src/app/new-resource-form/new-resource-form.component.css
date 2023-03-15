@@ -36,3 +36,19 @@
 #addPropertyButton:hover{
   background-color: lightblue;
 }
+#propertyType{
+  margin-right: 1rem;
+  /*width: 20rem;*/
+}
+.mat-button-toggle-group{
+/*  border-top-left-radius: 0;*/
+/*  border-top-right-radius: 0;*/
+/*top: 0;*/
+}
+#valueType {
+margin-left: 2rem;
+
+}
+mat-radio-button{
+  margin-right: 1rem;
+}

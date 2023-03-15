@@ -4,22 +4,24 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>select resource type</ng-template>
 
-      <!--first select-->
-
       <mat-form-field mat-select-trigger="" id="resource_filed" appearance="fill">
         <mat-label>resource type</mat-label>
-        <mat-select (selectionChange)="onSelected()" [formControl]="firstFormGroup.controls.resourceType" required>
-          <!--          <mat-select [formControl]="secondFormGroup.controls.key">-->
+        <mat-select [formControl]="firstFormGroup.controls.resourceType" required><!--          <mat-select [formControl]="secondFormGroup.controls.key">-->
           <mat-option>--</mat-option>
-          <!--          (click)="onSelected(resource.name)"-->
-          <mat-option *ngFor="let resource of resources" [value]="resource">
+          <mat-option *ngFor="let resource of resources" value="{{resource.name}}">
             {{resource.name}}
           </mat-option>
         </mat-select>
         <!--        <mat-error *ngIf="resourceControl.hasError('required')">Please choose a resource</mat-error>-->
         <mat-hint>{{resourceControl.value?.logicalName}}</mat-hint>
       </mat-form-field>
+      <mat-form-field mat-select-trigger=""  appearance="fill">
+        <mat-label>resource name</mat-label>
+        <input [formControl]="firstFormGroup.controls.resourceName" matInput #input maxlength="50" required>
 
+        <!--        <mat-error *ngIf="resourceControl.hasError('required')">Please choose a resource</mat-error>-->
+        <mat-hint>{{resourceControl.value?.logicalName}}</mat-hint>
+      </mat-form-field>
 
       <!--end of first select -->
       <div>
@@ -33,7 +35,7 @@
 
     <ng-template matStepLabel>choose properties</ng-template>
     <mat-list role="list">
-      <mat-list-item *ngFor="let property of selectedProperties| keyvalue" role="listitem">
+      <mat-list-item *ngFor="let property of (resource.properties)| keyvalue" role="listitem">
         <div class="example-container">
 
           <mat-form-field appearance="fill">
@@ -58,10 +60,32 @@
                           value="{{property.key}}">{{property.key}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field appearance="fill">
+
+          <mat-radio-group *ngIf="existingResources.length>0||params.size>0" id="valueType" (change)="onRadioChange()"
+                           color="primary"
+                           [formControl]="secondFormGroup.controls.type">
+            <mat-radio-button value="{{null}}">direct</mat-radio-button>
+            <mat-radio-button *ngIf="params.size>0" value="parameter">parameter</mat-radio-button>
+            <mat-radio-button *ngIf="existingResources.length>0" value="resource">resource</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-form-field *ngIf="secondFormGroup.value.type==''||secondFormGroup.value.type==null || secondFormGroup.value.type=='direct'" appearance="fill">
             <mat-label>property Value</mat-label>
             <input [formControl]="secondFormGroup.controls.value" matInput #input maxlength="50">
-            <mat-hint align="end">{{input.value.length}}/50</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="secondFormGroup.value.type=='parameter'" appearance="fill">
+            <mat-label>Parameter Name</mat-label>
+            <mat-select [formControl]="secondFormGroup.controls.value">
+              <mat-option *ngFor="let parameter of params|keyvalue" value="{{parameter.key}}">{{parameter.key}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="secondFormGroup.value.type=='resource'" appearance="fill">
+            <mat-label>Resource Name</mat-label>
+            <mat-select [formControl]="secondFormGroup.controls.value">
+              <mat-option *ngFor="let resource of existingResources" value="{{resource.name}}">{{resource.name}}</mat-option>
+            </mat-select>
           </mat-form-field>
 
           <button mat-flat-button id="addPropertyButton" (click)="addProperty()">
@@ -82,9 +106,9 @@
   <!------------------------------------------------------------------------------------------------------------  add tags -->
   <mat-step [stepControl]="secondFormGroup">
 
-    <ng-template matStepLabel>addTags</ng-template>
+    <ng-template matStepLabel>add tags</ng-template>
     <mat-list role="list">
-      <mat-list-item *ngFor="let tag of tags| keyvalue" role="listitem">
+      <mat-list-item *ngFor="let tag of resource.tags| keyvalue" role="listitem">
         <div class="example-container">
           <mat-form-field appearance="fill">
             <mat-label>tag name</mat-label>
@@ -100,12 +124,12 @@
       <div id="addTagsStep">
         <form [formGroup]="tagsFormGroup">
           <mat-form-field appearance="fill">
-            <mat-label>property Name</mat-label>
+            <mat-label>Tag Name</mat-label>
             <input [formControl]="tagsFormGroup.controls.key" matInput #input maxlength="50">
             <mat-hint align="end">{{input.value.length}}/50</mat-hint>
           </mat-form-field>
           <mat-form-field appearance="fill">
-            <mat-label>property Value</mat-label>
+            <mat-label>Tag Value</mat-label>
             <input [formControl]="tagsFormGroup.controls.value" matInput #input maxlength="50">
             <mat-hint align="end">{{input.value.length}}/50</mat-hint>
           </mat-form-field>

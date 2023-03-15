@@ -21,6 +21,8 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {MatInputModule} from "@angular/material/input";
 import {MatListModule} from "@angular/material/list";
 import { ParamsComponent } from './params/params.component';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatRadioModule} from "@angular/material/radio";
 
 const routes: Routes = [
   { path: 'createTemplate', component: CreateTemplateComponent },
@@ -37,23 +39,25 @@ const routes: Routes = [
     NewResourceFormComponent,
     ParamsComponent
   ],
-    imports: [
-        BrowserModule,
-        RouterModule.forRoot(routes),
-        MatSlideToggleModule,
-        BrowserAnimationsModule,
-        MatButtonModule,
-        MatProgressBarModule,
-        MatIconModule,
-        MatToolbarModule,
-        AppRoutingModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatExpansionModule,
-        MatStepperModule,
-        MatInputModule,
-        MatListModule
-    ],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    MatSlideToggleModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatProgressBarModule,
+    MatIconModule,
+    MatToolbarModule,
+    AppRoutingModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatExpansionModule,
+    MatStepperModule,
+    MatInputModule,
+    MatListModule,
+    MatButtonToggleModule,
+    MatRadioModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

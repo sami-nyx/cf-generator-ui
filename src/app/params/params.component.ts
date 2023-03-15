@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 
 @Component({
@@ -9,10 +9,13 @@ import {FormBuilder} from "@angular/forms";
 export class ParamsComponent {
 
 
+    @Input() params: Map<string, string>=new Map<string, string> ;
+  @Output() parameterCreated = new EventEmitter;
+
   constructor(private _formBuilder: FormBuilder) {
+    console.log(this.params)
     this.params.set('first', 'value');
   }
-
   parameterTypes: string[] = [
     "String",
     "Number",
@@ -25,7 +28,6 @@ export class ParamsComponent {
     key: [''],
     value: ['']
   });
-  params: Map<string, string> = new Map<string, string>();
 
 
   addParam() {

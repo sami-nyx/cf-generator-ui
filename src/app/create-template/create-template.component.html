@@ -1,22 +1,43 @@
 <div id="container">
 
-  <app-params></app-params>
+  <app-params [params]="params"></app-params>
   <app-resource></app-resource>
   <mat-accordion>
 
-      <mat-expansion-panel *ngFor=" let resource of mainResources" hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{resource.type}}
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="resourceInfo" *ngFor="let property of resource.properties|keyvalue">
-            <span >{{property.key}}: {{property.value}}</span>
+    <mat-expansion-panel *ngFor=" let resource of mainResources" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{resource.type + " : " + resource.name }}
+        </mat-panel-title>
+
+      </mat-expansion-panel-header>
+      <mat-list role="list">
+      <div *ngIf="resource.properties.size>0">
+        <h3>Properties:</h3>
+        <mat-list-item *ngFor="let property of (resource.properties)| keyvalue" role="listitem">
+        <div class="example-container">
+
+            <mat-label>{{property.key+":"}}</mat-label>
+            <mat-label>{{property.value}}</mat-label>
+
+        </div>
+      </mat-list-item>
+      </div>
+      </mat-list>
+      <mat-list role="list">
+        <div *ngIf="resource.tags.size>0">
+          <h3>Tags:</h3>
+          <mat-list-item *ngFor="let tag of (resource.tags)| keyvalue" role="listitem">
+            <div class="example-container">
+
+              <mat-label>{{tag.key+":"}}</mat-label>
+              <mat-label>{{tag.value}}</mat-label>
+
             </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <p>This is the primary content of the panel.</p>
-      </mat-expansion-panel>
+          </mat-list-item>
+        </div>
+      </mat-list>
+    </mat-expansion-panel>
 
     <mat-expansion-panel [(expanded)]="panelOpenState">
       <mat-expansion-panel-header>
@@ -30,7 +51,8 @@
       </mat-expansion-panel-header>
       <!--      <p>I'm visible because I am open</p>-->
 
-      <app-new-resource-form (resourceCreated)="ResourceCreatedEventHandler($event)"></app-new-resource-form>
+      <app-new-resource-form [existingResources]="mainResources" [params]="params"
+                             (resourceCreated)="ResourceCreatedEventHandler($event)"></app-new-resource-form>
 
     </mat-expansion-panel>
   </mat-accordion>
