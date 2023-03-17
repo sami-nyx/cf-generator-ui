@@ -10,6 +10,7 @@ pipeline {
     stage('print ls') {
       steps {
         sh 'ls'
+        sh 'pwd'
       }
     }
 
