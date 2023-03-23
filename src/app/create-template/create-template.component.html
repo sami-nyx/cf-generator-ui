@@ -55,6 +55,24 @@
                              (resourceCreated)="ResourceCreatedEventHandler($event)"></app-new-resource-form>
 
     </mat-expansion-panel>
+    <mat-expansion-panel >
+<!--    <mat-expansion-panel [(expanded)]="panelOpenState">-->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon><span class="material-icons">data_object</span></mat-icon>
+          <span> View Template</span>
+        </mat-panel-title>
+        <mat-panel-description>
+
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <button (click)="printContext()"  mat-flat-button> display</button>
+      <pre>
+        <code>
+          {{mainResources}}
+        </code>
+      </pre>
+    </mat-expansion-panel>
   </mat-accordion>
 
 </div>

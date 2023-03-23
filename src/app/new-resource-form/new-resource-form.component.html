@@ -8,8 +8,8 @@
         <mat-label>resource type</mat-label>
         <mat-select [formControl]="firstFormGroup.controls.resourceType" required><!--          <mat-select [formControl]="secondFormGroup.controls.key">-->
           <mat-option>--</mat-option>
-          <mat-option *ngFor="let resource of resources" value="{{resource.name}}">
-            {{resource.name}}
+          <mat-option *ngFor="let resource of resources|keyvalue" value="{{resource.key}}">
+            {{resource.key}}
           </mat-option>
         </mat-select>
         <!--        <mat-error *ngIf="resourceControl.hasError('required')">Please choose a resource</mat-error>-->

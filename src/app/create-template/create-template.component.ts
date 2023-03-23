@@ -40,4 +40,7 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   // newParameterCreated()
+  printContext() {
+    console.log(JSON.stringify(this.mainResources));
+  }
 }

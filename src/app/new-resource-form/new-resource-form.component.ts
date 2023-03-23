@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {ResourceModule} from "../resource/resource.module";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
+import {ResourceService} from "../service/resource/resource.service";
 
 interface Resource {
   name: string;
@@ -21,7 +22,29 @@ function getProperties(value: String) {
       ["Tags", "Map"]
     ]);
 
-  } else {
+  } else if (value =='VPCGatewayAttachment')  {
+    temp = new Map<string, string>([
+      ["InternetGatewayId", "String"],
+      ["VpcId", "String"],
+
+    ]);
+  }else if (value =='Subnet')  {
+    temp = new Map<string, string>([
+      ["VpcId", "String"],
+      ["AvailabilityZone", "String"],
+      ["CidrBlock", "String"],
+      ["MapPublicIpOnLaunch", "Boolean"],
+
+    ]);
+  }else if (value =='EIP')  {
+    temp = new Map<string, string>([
+      ["VpcId", "String"],
+      ["AvailabilityZone", "String"],
+      ["CidrBlock", "String"],
+      ["MapPublicIpOnLaunch", "Boolean"],
+
+    ]);
+  }else {
     temp = new Map<string, string>([
       ["AllocatedStorage", "String"],
       ["AllowMajorVersionUpgrade", "Boolean"],
@@ -53,11 +76,15 @@ export class NewResourceFormComponent {
   resource = new ResourceModule(new Map<string, string>(), new Map<string, string>());
   selectedProperties: Map<string, string> = new Map<string, string>();
   tags: Map<string, string> = new Map<string, string>();
-  resources: Resource[] = [
-    {name: 'S3', logicalName: 'aws::s3'},
-    {name: 'VPC', logicalName: 'ec2::vpc'},
-  ];
-
+  // resources: Resource[] = [
+  //   {name: 'S3', logicalName: 'aws::s3'},
+  //   {name: 'VPC', logicalName: 'AWS::EC2::VPC'},
+  //   {name: 'InternetGateway', logicalName: 'AWS::EC2::InternetGateway'},
+  //   {name: 'VPCGatewayAttachment', logicalName: 'AWS::EC2::VPCGatewayAttachment'},
+  //   {name: 'Subnet', logicalName: 'AWS::EC2::Subnet'},
+  //   {name: 'EIP', logicalName: 'AWS::EC2::EIP'},
+  // ];
+  resources:Map<string,string>;
   firstFormGroup = this._formBuilder.group({
     resourceType: [''],
     resourceName: ['']
@@ -72,7 +99,8 @@ export class NewResourceFormComponent {
     value: ['']
   });
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _resourceService:ResourceService,private _formBuilder: FormBuilder) {
+    this.resources=_resourceService.getResourceNames();
   }
 
 
@@ -84,12 +112,12 @@ export class NewResourceFormComponent {
 
     this.resource.type = this.firstFormGroup.value.resourceType;
     this.resource.name = this.firstFormGroup.value.resourceName;
-
+    this._resourceService.getResourceNames();
     this.properties = getProperties(this.resource.type);
-    console.log("new formName:"+ this.firstFormGroup.value.resourceName);
-    console.log("new resourceNAme:"+this.resource.name);
-    console.log("new resourceType:"+this.resource.type);
-    console.log(this.firstFormGroup.value)
+    // console.log("new formName:"+ this.firstFormGroup.value.resourceName);
+    // console.log("new resourceNAme:"+this.resource.name);
+    // console.log("new resourceType:"+this.resource.type);
+    // console.log(this.firstFormGroup.value)
   }
 
   submitA() {
