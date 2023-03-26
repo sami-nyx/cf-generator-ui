@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {ResourceModule} from "../resource/resource.module";
+import {FormatterService} from "../service/formatter/formatter.service";
 
 // const resouses;
 @Component({
@@ -12,21 +13,25 @@ export class CreateTemplateComponent implements OnInit {
   panelOpenState = false;
   mainResources: Array<ResourceModule> = new Array<ResourceModule>();
   params: Map<string, string> = new Map<string, string>();
+  formattedText='';
+  constructor(private formatter:FormatterService,private _mm: MatExpansionModule) {
+    let properties=new Map<string, string>();
+    let tags=new Map<string, string>();
+    this.params.set("paramA","prAVAl");
+    this.params.set("paramB","prBVAl");
+    this.params.set("paramC","prCVAl");
 
-  constructor(private _mm: MatExpansionModule) {
-//     let properties=new Map<string, string>();
-//     let tags=new Map<string, string>();
-//     properties.set("prA","prAVAl");
-//     properties.set("prB","prBVAl");
-//     properties.set("prC","prCVAl");
-//     tags.set("tagA","tagAVal");
-//     tags.set("tagB","tagBVal");
-//     tags.set("tagC","taCAVal");
-//
-//    let tempResource=new ResourceModule(properties,tags);
-//    tempResource.name='vpc-a'
-//    tempResource.type='VPC';
-// this.mainResources.push(tempResource);
+    properties.set("prA","prAVAl");
+    properties.set("prB","prBVAl");
+    properties.set("prC","prCVAl");
+    tags.set("tagA","tagAVal");
+    tags.set("tagB","tagBVal");
+    tags.set("tagC","taCAVal");
+
+   let tempResource=new ResourceModule(properties,tags);
+   tempResource.name='vpc-a'
+   tempResource.type='VPC';
+this.mainResources.push(tempResource);
   }
 
   ngOnInit(): void {
@@ -40,7 +45,11 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   // newParameterCreated()
-  printContext() {
-    console.log(JSON.stringify(this.mainResources));
+  updateFormattedText() {
+    this.formattedText=  this.formatter.doFormat(this.params,this.mainResources,this.params);
+    console.log(this.formattedText)
+  }
+  onDownload(){
+
   }
 }

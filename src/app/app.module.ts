@@ -23,6 +23,7 @@ import {MatListModule} from "@angular/material/list";
 import { ParamsComponent } from './params/params.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatRadioModule} from "@angular/material/radio";
+import { HttpClientModule} from "@angular/common/http";
 
 const routes: Routes = [
   { path: 'createTemplate', component: CreateTemplateComponent },
@@ -56,7 +57,8 @@ const routes: Routes = [
     MatInputModule,
     MatListModule,
     MatButtonToggleModule,
-    MatRadioModule
+    MatRadioModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

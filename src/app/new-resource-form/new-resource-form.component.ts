@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {ResourceModule} from "../resource/resource.module";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
@@ -22,13 +22,13 @@ function getProperties(value: String) {
       ["Tags", "Map"]
     ]);
 
-  } else if (value =='VPCGatewayAttachment')  {
+  } else if (value == 'VPCGatewayAttachment') {
     temp = new Map<string, string>([
       ["InternetGatewayId", "String"],
       ["VpcId", "String"],
 
     ]);
-  }else if (value =='Subnet')  {
+  } else if (value == 'Subnet') {
     temp = new Map<string, string>([
       ["VpcId", "String"],
       ["AvailabilityZone", "String"],
@@ -36,7 +36,7 @@ function getProperties(value: String) {
       ["MapPublicIpOnLaunch", "Boolean"],
 
     ]);
-  }else if (value =='EIP')  {
+  } else if (value == 'EIP') {
     temp = new Map<string, string>([
       ["VpcId", "String"],
       ["AvailabilityZone", "String"],
@@ -44,7 +44,7 @@ function getProperties(value: String) {
       ["MapPublicIpOnLaunch", "Boolean"],
 
     ]);
-  }else {
+  } else {
     temp = new Map<string, string>([
       ["AllocatedStorage", "String"],
       ["AllowMajorVersionUpgrade", "Boolean"],
@@ -64,7 +64,7 @@ function getProperties(value: String) {
   templateUrl: './new-resource-form.component.html',
   styleUrls: ['./new-resource-form.component.css']
 })
-export class NewResourceFormComponent {
+export class NewResourceFormComponent implements OnInit {
   @Output() resourceCreated = new EventEmitter;
   @Input() params: Map<string, string> = new Map<string, string>();
   @Input() existingResources: Array<ResourceModule> = new Array<ResourceModule>();
@@ -76,15 +76,8 @@ export class NewResourceFormComponent {
   resource = new ResourceModule(new Map<string, string>(), new Map<string, string>());
   selectedProperties: Map<string, string> = new Map<string, string>();
   tags: Map<string, string> = new Map<string, string>();
-  // resources: Resource[] = [
-  //   {name: 'S3', logicalName: 'aws::s3'},
-  //   {name: 'VPC', logicalName: 'AWS::EC2::VPC'},
-  //   {name: 'InternetGateway', logicalName: 'AWS::EC2::InternetGateway'},
-  //   {name: 'VPCGatewayAttachment', logicalName: 'AWS::EC2::VPCGatewayAttachment'},
-  //   {name: 'Subnet', logicalName: 'AWS::EC2::Subnet'},
-  //   {name: 'EIP', logicalName: 'AWS::EC2::EIP'},
-  // ];
-  resources:Map<string,string>;
+
+  resources: Map<string, string>;
   firstFormGroup = this._formBuilder.group({
     resourceType: [''],
     resourceName: ['']
@@ -99,8 +92,10 @@ export class NewResourceFormComponent {
     value: ['']
   });
 
-  constructor(private _resourceService:ResourceService,private _formBuilder: FormBuilder) {
-    this.resources=_resourceService.getResourceNames();
+
+  constructor(private _resourceService: ResourceService, private _formBuilder: FormBuilder) {
+
+    this.resources = new Map<string, string>();
   }
 
 
@@ -112,16 +107,13 @@ export class NewResourceFormComponent {
 
     this.resource.type = this.firstFormGroup.value.resourceType;
     this.resource.name = this.firstFormGroup.value.resourceName;
-    this._resourceService.getResourceNames();
+
     this.properties = getProperties(this.resource.type);
-    // console.log("new formName:"+ this.firstFormGroup.value.resourceName);
-    // console.log("new resourceNAme:"+this.resource.name);
-    // console.log("new resourceType:"+this.resource.type);
-    // console.log(this.firstFormGroup.value)
+
   }
 
   submitA() {
-     this.selectedProperties = new Map<string, string>();
+    this.selectedProperties = new Map<string, string>();
     this.selectedProperties = new Map<string, string>();
     this.tags = new Map<string, string>();
 
@@ -130,7 +122,7 @@ export class NewResourceFormComponent {
     this.tagsFormGroup.reset();
     this.secondFormGroup.value.type = 'direct';
     this.resourceCreated.emit(this.resource);
-    this.resource=new ResourceModule(new Map<string,string>(),new Map<string,string>());
+    this.resource = new ResourceModule(new Map<string, string>(), new Map<string, string>());
 
 
   }
@@ -165,6 +157,19 @@ export class NewResourceFormComponent {
   onRadioChange() {
     console.log(this.secondFormGroup.value.type);
     console.log(this.params);
+  }
+
+  ngOnInit(): void {
+    this._resourceService.makeSignedGetRequest().subscribe((response) => {
+      let temp = <Array<string>>(JSON.parse(response.body).data);
+
+      temp.forEach((item) => {
+
+        let parts = item.split('::');
+        this.resources.set((parts[1] + '-' + parts[2]), item)
+      })
+    });
+
   }
 }
 

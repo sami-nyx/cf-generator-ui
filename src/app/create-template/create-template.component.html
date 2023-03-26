@@ -12,17 +12,17 @@
 
       </mat-expansion-panel-header>
       <mat-list role="list">
-      <div *ngIf="resource.properties.size>0">
-        <h3>Properties:</h3>
-        <mat-list-item *ngFor="let property of (resource.properties)| keyvalue" role="listitem">
-        <div class="example-container">
+        <div *ngIf="resource.properties.size>0">
+          <h3>Properties:</h3>
+          <mat-list-item *ngFor="let property of (resource.properties)| keyvalue" role="listitem">
+            <div class="example-container">
 
-            <mat-label>{{property.key+":"}}</mat-label>
-            <mat-label>{{property.value}}</mat-label>
+              <mat-label>{{property.key + ":"}}</mat-label>
+              <mat-label>{{property.value}}</mat-label>
 
+            </div>
+          </mat-list-item>
         </div>
-      </mat-list-item>
-      </div>
       </mat-list>
       <mat-list role="list">
         <div *ngIf="resource.tags.size>0">
@@ -30,7 +30,7 @@
           <mat-list-item *ngFor="let tag of (resource.tags)| keyvalue" role="listitem">
             <div class="example-container">
 
-              <mat-label>{{tag.key+":"}}</mat-label>
+              <mat-label>{{tag.key + ":"}}</mat-label>
               <mat-label>{{tag.value}}</mat-label>
 
             </div>
@@ -51,12 +51,12 @@
       </mat-expansion-panel-header>
       <!--      <p>I'm visible because I am open</p>-->
 
-      <app-new-resource-form [existingResources]="mainResources" [params]="params"
-                             (resourceCreated)="ResourceCreatedEventHandler($event)"></app-new-resource-form>
+      <!--      <app-new-resource-form [existingResources]="mainResources" [params]="params"-->
+      <!--                             (resourceCreated)="ResourceCreatedEventHandler($event)"></app-new-resource-form>-->
 
     </mat-expansion-panel>
-    <mat-expansion-panel >
-<!--    <mat-expansion-panel [(expanded)]="panelOpenState">-->
+    <mat-expansion-panel (click)="updateFormattedText()">
+      <!--    <mat-expansion-panel [(expanded)]="panelOpenState">-->
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon><span class="material-icons">data_object</span></mat-icon>
@@ -66,12 +66,25 @@
 
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <button (click)="printContext()"  mat-flat-button> display</button>
+      <!--      <pre>-->
+      <!--        <code>-->
+      <!--        params:&#123;-->
+      <!--        <code *ngFor="let param of params|keyvalue">-->
+      <!--          "{{param.key}}":"{{param.value}}"-->
+      <!--          </code>-->
+      <!--          &#125;-->
+      <!--        </code>-->
+      <!--         <code>-->
+      <!--        resources:&#123;-->
+      <!--        <code *ngFor="let resource of mainResources">-->
+      <!--          {{resource.name}}:&#123;-->
+      <!--          properties:&#123;-->
       <pre>
-        <code>
-          {{mainResources}}
-        </code>
-      </pre>
+    <code  [innerHTML]="formattedText">
+<!--{{formattedText}}-->
+</code>
+  </pre>
+      <button class="download" (click)="onDownload()" mat-button download>download</button>
     </mat-expansion-panel>
   </mat-accordion>
 

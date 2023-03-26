@@ -1,425 +1,49 @@
-import { Injectable } from '@angular/core';
-// import { readFileSync } from 'fs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import * as crypto from 'crypto-js'
+import {MyResponse} from "../../MyResponse";
+
 @Injectable({
   providedIn: 'root'
 })
 export class ResourceService {
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+  }
 
-  getResourceNames(){
-let text=this.gettext();
- let types=text.split('\n\n');
 
-  let resources=new Map<string,string>();
-    types.forEach(
-      type => {
-        let parts = type.split('::');
-          resources.set((parts[1]+'-'+parts[2]),type)
-      })
+  makeSignedGetRequest() {
+    let url = 'https://gsq7cb6hl6.execute-api.us-east-1.amazonaws.com/snapshot/listallresouces'
+    const accessKey = 'AKIAYMMURP4HWTX77GK6';
+    const secretKey = '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';
+    const region = 'us-east-1';
+    const service = 'API-GATEWAY';
 
-return resources;
-}
-  gettext(){
-  return "AWS::AccessAnalyzer::Analyzer\n" +
-    "\n" +
-    "AWS::AmazonMQ::Broker\n" +
-    "\n" +
-    "AWS::AmazonMQ::Configuration\n" +
-    "\n" +
-    "AWS::AmazonMQ::ConfigurationAssociation\n" +
-    "\n" +
-    "AWS::ApiGateway::Account\n" +
-    "\n" +
-    "AWS::ApiGateway::ApiKey\n" +
-    "\n" +
-    "AWS::ApiGateway::Authorizer\n" +
-    "\n" +
-    "AWS::ApiGateway::BasePathMapping\n" +
-    "\n" +
-    "AWS::ApiGateway::ClientCertificate\n" +
-    "\n" +
-    "AWS::ApiGateway::Deployment\n" +
-    "\n" +
-    "AWS::ApiGateway::DocumentationPart\n" +
-    "\n" +
-    "AWS::ApiGateway::DocumentationVersion\n" +
-    "\n" +
-    "AWS::ApiGateway::DomainName\n" +
-    "\n" +
-    "AWS::ApiGateway::GatewayResponse\n" +
-    "\n" +
-    "AWS::ApiGateway::Method\n" +
-    "\n" +
-    "AWS::ApiGateway::Model\n" +
-    "\n" +
-    "AWS::ApiGateway::RequestValidator\n" +
-    "\n" +
-    "AWS::ApiGateway::Resource\n" +
-    "\n" +
-    "AWS::ApiGateway::RestApi\n" +
-    "\n" +
-    "AWS::ApiGateway::Stage\n" +
-    "\n" +
-    "AWS::ApiGateway::UsagePlan\n" +
-    "\n" +
-    "AWS::ApiGateway::UsagePlanKey\n" +
-    "\n" +
-    "AWS::ApiGateway::VpcLink\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::Api\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::ApiMapping\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::Authorizer\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::DomainName\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::Deployment\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::Integration\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::IntegrationResponse\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::Model\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::Route\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::RouteResponse\n" +
-    "\n" +
-    "AWS::ApiGatewayV2::Stage\n" +
-    "\n" +
-    "AWS::AppSync::ApiKey\n" +
-    "\n" +
-    "AWS::AppSync::DataSource\n" +
-    "\n" +
-    "AWS::AppSync::GraphQLApi\n" +
-    "\n" +
-    "AWS::AppSync::GraphQLSchema\n" +
-    "\n" +
-    "AWS::AppSync::Resolver\n" +
-    "\n" +
-    "AWS::ApplicationAutoScaling::AutoScalingGroup\n" +
-    "\n" +
-    "AWS::ApplicationAutoScaling::LaunchConfiguration\n" +
-    "\n" +
-    "AWS::ApplicationAutoScaling::ScalableTarget\n" +
-    "\n" +
-    "AWS::ApplicationAutoScaling::ScalingPolicy\n" +
-    "\n" +
-    "AWS::Athena::NamedQuery\n" +
-    "\n" +
-    "AWS::Athena::WorkGroup\n" +
-    "\n" +
-    "AWS::CertificateManager::Certificate\n" +
-    "\n" +
-    "AWS::Chatbot::SlackChannelConfiguration\n" +
-    "\n" +
-    "AWS::CloudFormation::CustomResource\n" +
-    "\n" +
-    "AWS::CloudFormation::Interface\n" +
-    "\n" +
-    "AWS::CloudFormation::Macro\n" +
-    "\n" +
-    "AWS::CloudFormation::WaitConditionHandle\n" +
-    "\n" +
-    "AWS::CloudFront::CachePolicy\n" +
-    "\n" +
-    "AWS::CloudFront::CloudFrontOriginAccessIdentity\n" +
-    "\n" +
-    "AWS::CloudFront::Distribution\n" +
-    "\n" +
-    "AWS::CloudFront::Function\n" +
-    "\n" +
-    "AWS::CloudFront::OriginRequestPolicy\n" +
-    "\n" +
-    "AWS::CloudFront::ResponseHeadersPolicy\n" +
-    "\n" +
-    "AWS::CloudFront::StreamingDistribution\n" +
-    "\n" +
-    "AWS::CloudTrail::Trail\n" +
-    "\n" +
-    "AWS::CloudWatch::Alarm\n" +
-    "\n" +
-    "AWS::CloudWatch::AnomalyDetector\n" +
-    "\n" +
-    "AWS::CloudWatch::Dashboard\n" +
-    "\n" +
-    "AWS::CloudWatch::InsightRule\n" +
-    "\n" +
-    "AWS::CodeBuild::Project\n" +
-    "\n" +
-    "AWS::CodeCommit::Repository\n" +
-    "\n" +
-    "AWS::CodePipeline::CustomActionType\n" +
-    "\n" +
-    "AWS::CodePipeline::Pipeline\n" +
-    "\n" +
-    "AWS::CodePipeline::Webhook\n" +
-    "\n" +
-    "AWS::CodeStar::GitHubRepository\n" +
-    "\n" +
-    "AWS::CodeStarNotifications::NotificationRule\n" +
-    "\n" +
-    "AWS::Cognito::IdentityPool\n" +
-    "\n" +
-    "AWS::Cognito::IdentityPoolRoleAttachment\n" +
-    "\n" +
-    "AWS::Cognito::UserPool\n" +
-    "\n" +
-    "AWS::Cognito::UserPoolClient\n" +
-    "\n" +
-    "AWS::Cognito::UserPoolDomain\n" +
-    "\n" +
-    "AWS::Cognito::UserPoolGroup\n" +
-    "\n" +
-    "AWS::Cognito::UserPoolResourceServer\n" +
-    "\n" +
-    "AWS::Cognito::UserPoolUser\n" +
-    "\n" +
-    "AWS::Cognito::UserPoolUserToGroupAttachment\n" +
-    "\n" +
-    "AWS::Config::AggregationAuthorization\n" +
-    "\n" +
-    "AWS::Config::ConfigRule\n" +
-    "\n" +
-    "AWS::Config::ConfigurationAggregator\n" +
-    "\n" +
-    "AWS::Config::ConfigurationRecorder\n" +
-    "\n" +
-    "AWS::Config::DeliveryChannel\n" +
-    "\n" +
-    "AWS::Config::RemediationConfiguration\n" +
-    "\n" +
-    "AWS::DataPipeline::Pipeline\n" +
-    "\n" +
-    "AWS::DynamoDB::Table\n" +
-    "\n" +
-    "AWS::EC2::EIP\n" +
-    "\n" +
-    "AWS::EC2::InternetGateway\n" +
-    "\n" +
-    "AWS::EC2::NatGateway\n" +
-    "\n" +
-    "AWS::EC2::Route\n" +
-    "\n" +
-    "AWS::EC2::RouteTable\n" +
-    "\n" +
-    "AWS::EC2::SecurityGroup\n" +
-    "\n" +
-    "AWS::EC2::SecurityGroupEgress\n" +
-    "\n" +
-    "AWS::EC2::SecurityGroupIngress\n" +
-    "\n" +
-    "AWS::EC2::Subnet\n" +
-    "\n" +
-    "AWS::EC2::SubnetRouteTableAssociation\n" +
-    "\n" +
-    "AWS::EC2::VPC\n" +
-    "\n" +
-    "AWS::EC2::VPCGatewayAttachment\n" +
-    "\n" +
-    "AWS::EC2::VPCPeeringConnection\n" +
-    "\n" +
-    "AWS::ECR::Repository\n" +
-    "\n" +
-    "AWS::Elasticsearch::Domain\n" +
-    "\n" +
-    "AWS::Events::EventBus\n" +
-    "\n" +
-    "AWS::Events::EventBusPolicy\n" +
-    "\n" +
-    "AWS::Events::Rule\n" +
-    "\n" +
-    "AWS::EventSchemas::Discoverer\n" +
-    "\n" +
-    "AWS::EventSchemas::Registry\n" +
-    "\n" +
-    "AWS::EventSchemas::Schema\n" +
-    "\n" +
-    "AWS::Glue::Classifier\n" +
-    "\n" +
-    "AWS::Glue::Connection\n" +
-    "\n" +
-    "AWS::Glue::Crawler\n" +
-    "\n" +
-    "AWS::Glue::Database\n" +
-    "\n" +
-    "AWS::Glue::DevEndpoint\n" +
-    "\n" +
-    "AWS::Glue::Job\n" +
-    "\n" +
-    "AWS::Glue::Partition\n" +
-    "\n" +
-    "AWS::Glue::SecurityConfiguration\n" +
-    "\n" +
-    "AWS::Glue::Table\n" +
-    "\n" +
-    "AWS::Glue::Trigger\n" +
-    "\n" +
-    "AWS::Glue::Workflow\n" +
-    "\n" +
-    "AWS::IAM::Group\n" +
-    "\n" +
-    "AWS::IAM::InstanceProfile\n" +
-    "\n" +
-    "AWS::IAM::ManagedPolicy\n" +
-    "\n" +
-    "AWS::IAM::OIDCProvider\n" +
-    "\n" +
-    "AWS::IAM::Policy\n" +
-    "\n" +
-    "AWS::IAM::Role\n" +
-    "\n" +
-    "AWS::IAM::ServiceLinkedRole\n" +
-    "\n" +
-    "AWS::IoT::Certificate\n" +
-    "\n" +
-    "AWS::IoT::Policy\n" +
-    "\n" +
-    "AWS::IoT::PolicyPrincipalAttachment\n" +
-    "\n" +
-    "AWS::IoT::Thing\n" +
-    "\n" +
-    "AWS::IoT::ThingPrincipalAttachment\n" +
-    "\n" +
-    "AWS::IoT::TopicRule\n" +
-    "\n" +
-    "AWS::KMS::Alias\n" +
-    "\n" +
-    "AWS::KMS::Key\n" +
-    "\n" +
-    "AWS::Kinesis::Stream\n" +
-    "\n" +
-    "AWS::Kinesis::StreamConsumer\n" +
-    "\n" +
-    "AWS::Kinesis::Streams\n" +
-    "\n" +
-    "AWS::KinesisAnalytics::Application\n" +
-    "\n" +
-    "AWS::KinesisAnalytics::ApplicationOutput\n" +
-    "\n" +
-    "AWS::KinesisFirehose::DeliveryStream\n" +
-    "\n" +
-    "AWS::Lambda::Alias\n" +
-    "\n" +
-    "AWS::Lambda::EventInvokeConfig\n" +
-    "\n" +
-    "AWS::Lambda::EventSourceMapping\n" +
-    "\n" +
-    "AWS::Lambda::Function\n" +
-    "\n" +
-    "AWS::Lambda::LayerVersion\n" +
-    "\n" +
-    "AWS::Lambda::LayerVersionPermission\n" +
-    "\n" +
-    "AWS::Lambda::Permission\n" +
-    "\n" +
-    "AWS::Lambda::Version\n" +
-    "\n" +
-    "AWS::Location::GeofenceCollection\n" +
-    "\n" +
-    "AWS::Location::Map\n" +
-    "\n" +
-    "AWS::Location::PlaceIndex\n" +
-    "\n" +
-    "AWS::Location::RouteCalculator\n" +
-    "\n" +
-    "AWS::Location::Tracker\n" +
-    "\n" +
-    "AWS::Location::TrackerConsumer\n" +
-    "\n" +
-    "AWS::Logs::Destination\n" +
-    "\n" +
-    "AWS::Logs::LogGroup\n" +
-    "\n" +
-    "AWS::Logs::LogStream\n" +
-    "\n" +
-    "AWS::Logs::MetricFilter\n" +
-    "\n" +
-    "AWS::Logs::SubscriptionFilter\n" +
-    "\n" +
-    "AWS::Route53::HealthCheck\n" +
-    "\n" +
-    "AWS::Route53::HostedZone\n" +
-    "\n" +
-    "AWS::Route53::RecordSet\n" +
-    "\n" +
-    "AWS::Route53::RecordSetGroup\n" +
-    "\n" +
-    "AWS::S3::Bucket\n" +
-    "\n" +
-    "AWS::S3::BucketPolicy\n" +
-    "\n" +
-    "AWS::SNS::Subscription\n" +
-    "\n" +
-    "AWS::SNS::Topic\n" +
-    "\n" +
-    "AWS::SNS::TopicPolicy\n" +
-    "\n" +
-    "AWS::SQS::Queue\n" +
-    "\n" +
-    "AWS::SQS::QueuePolicy\n" +
-    "\n" +
-    "AWS::SSM::Association\n" +
-    "\n" +
-    "AWS::SSM::Document\n" +
-    "\n" +
-    "AWS::SSM::MaintenanceWindowTask\n" +
-    "\n" +
-    "AWS::SSM::Parameter\n" +
-    "\n" +
-    "AWS::SSM::PatchBaseline\n" +
-    "\n" +
-    "AWS::SSM::ResourceDataSync\n" +
-    "\n" +
-    "AWS::SecretsManager::ResourcePolicy\n" +
-    "\n" +
-    "AWS::SecretsManager::RotationSchedule\n" +
-    "\n" +
-    "AWS::SecretsManager::Secret\n" +
-    "\n" +
-    "AWS::SecretsManager::SecretTargetAttachment\n" +
-    "\n" +
-    "AWS::Serverless::Api\n" +
-    "\n" +
-    "AWS::Serverless::Application\n" +
-    "\n" +
-    "AWS::Serverless::Function\n" +
-    "\n" +
-    "AWS::Serverless::HttpApi\n" +
-    "\n" +
-    "AWS::Serverless::LayerVersion\n" +
-    "\n" +
-    "AWS::Serverless::SimpleTable\n" +
-    "\n" +
-    "AWS::Serverless::StateMachine\n" +
-    "\n" +
-    "AWS::ServiceDiscovery::HttpNamespace\n" +
-    "\n" +
-    "AWS::ServiceCatalog::CloudFormationProvisionedProduct\n" +
-    "\n" +
-    "AWS::ServiceDiscovery::Instance\n" +
-    "\n" +
-    "AWS::ServiceDiscovery::PrivateDnsNamespace\n" +
-    "\n" +
-    "AWS::ServiceDiscovery::PublicDnsNamespace\n" +
-    "\n" +
-    "AWS::ServiceDiscovery::Service\n" +
-    "\n" +
-    "AWS::SES::ReceiptRule\n" +
-    "\n" +
-    "AWS::SES::ReceiptRuleSet\n" +
-    "\n" +
-    "AWS::StepFunctions::Activity\n" +
-    "\n" +
-    "AWS::StepFunctions::StateMachine\n" +
-    "\n" +
-    "AWS::Wisdom::Assistant\n" +
-    "\n" +
-    "AWS::Wisdom::AssistantAssociation\n" +
-    "\n" +
-    "AWS::Wisdom::KnowledgeBase\n"
+    const headers = new HttpHeaders();
+    const timestamp = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+    const date = timestamp.substr(0, 8);
 
-}
+    // Step 1: Create canonical request
+    const canonicalRequest = `GET\n${url}\n\nhost:${url.split('/')[2]}\n\nhost\n`;
+
+    // Step 2: Create string to sign
+    const credentialScope = `${date}/${region}/${service}/aws4_request`;
+    const stringToSign = `AWS4-HMAC-SHA256\n${timestamp}\n${credentialScope}\n${crypto.SHA256(canonicalRequest).toString(crypto.enc.Hex)}`;
+
+    // Step 3: Calculate signature
+    const kDate = crypto.HmacSHA256(date, `AWS4${secretKey}`).toString(crypto.enc.Hex);
+    const kRegion = crypto.HmacSHA256(region, kDate).toString(crypto.enc.Hex);
+    const kService = crypto.HmacSHA256(service, kRegion).toString(crypto.enc.Hex);
+    const kSigning = crypto.HmacSHA256('aws4_request', kService).toString(crypto.enc.Hex);
+    const signature = crypto.HmacSHA256(stringToSign, kSigning).toString(crypto.enc.Hex);
+
+    // Step 4: Add signature to headers
+    headers.set('Authorization', `AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=host, Signature=${signature}`);
+
+   return this.http.get<MyResponse>(url, {headers})
+
+   //  let response=this.http.get(url, {headers}).pipe((res));
+
+  }
+
 }
