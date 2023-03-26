@@ -14,8 +14,8 @@ export class ResourceService {
 
   makeSignedGetRequest() {
     let url = 'https://gsq7cb6hl6.execute-api.us-east-1.amazonaws.com/snapshot/listallresouces'
-    const accessKey = 'AKIAYMMURP4HWTX77GK6';
-    const secretKey = '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';
+    const accessKey = '****';
+    const secretKey = '****/';
     const region = 'us-east-1';
     const service = 'API-GATEWAY';
 
